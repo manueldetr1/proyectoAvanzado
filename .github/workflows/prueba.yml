@@ -9,12 +9,12 @@ jobs:
       - name: Comparar DEV_TOKEN contra LOCAL_DEV_TOKEN
         env:
           SECRET_DEV: ${{ secrets.DEV_TOKEN }}
+        shell: pwsh
         run: |
-          if [ "$SECRET_DEV" = "$LOCAL_DEV_TOKEN" ]; then
-            echo "¡Exito! Los tokens coinciden."
+          if ($env:SECRET_DEV -eq $env:LOCAL_DEV_TOKEN) {
+            Write-Output "¡Exito! Los tokens coinciden."
             exit 0
-          else
-            echo "Error: El secret y la variable local son distintos."
+          } else {
+            Write-Output "Error: El secret y la variable local son distintos."
             exit 1
-          fi
-        shell: bash
+          }
