@@ -9,12 +9,20 @@ jobs:
       - name: Comparar DEV_TOKEN contra LOCAL_DEV_TOKEN
         env:
           SECRET_DEV: ${{ secrets.DEV_TOKEN }}
-        shell: pwsh
+        shell: powershell
         run: |
+          Write-Host "Verificando variables..."
+          if (-not $env:SECRET_DEV) {
+            Write-Host "El secret DEV_TOKEN está vacío o no se ha leído."
+          }
+          if (-not $env:LOCAL_DEV_TOKEN) {
+            Write-Host "La variable LOCAL_DEV_TOKEN no existe en la máquina."
+          }
+
           if ($env:SECRET_DEV -eq $env:LOCAL_DEV_TOKEN) {
-            Write-Output "¡Exito! Los tokens coinciden."
+            Write-Host "¡Éxito! Los tokens coinciden."
             exit 0
           } else {
-            Write-Output "Error: El secret y la variable local son distintos."
+            Write-Host "Error: El secret y la variable local son distintos."
             exit 1
           }
